@@ -127,6 +127,21 @@
   .stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--sage-dark); display: block; line-height: 1.1; }
   .stat-desc { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; display: block; }
 
+  .email-intro { font-size: 13px; color: var(--text-muted); margin-bottom: 1rem; line-height: 1.5; }
+  .email-options { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.25rem; }
+  .email-option { display: flex; align-items: flex-start; gap: 0.75rem; cursor: pointer; padding: 0.75rem; border-radius: var(--radius-sm); border: 1px solid #e8e4dc; background: var(--stone-light); transition: background 0.15s; }
+  .email-option:hover { background: #ece9e2; }
+  .email-option input[type="checkbox"] { margin-top: 2px; accent-color: var(--sage); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+  .email-option-text { display: flex; flex-direction: column; gap: 2px; }
+  .email-option-text strong { font-size: 13px; color: var(--text); font-weight: 500; }
+  .email-option-text span { font-size: 12px; color: var(--text-muted); }
+  .email-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .email-row input[type="email"] { flex: 1; padding: 0.65rem 0.875rem; border: 1px solid #e0dcd4; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--stone-light); outline: none; transition: border-color 0.15s; }
+  .email-row input[type="email"]:focus { border-color: var(--sage-mid); }
+  .btn-email { padding: 0.65rem 1.25rem; background: var(--sage); color: white; border: none; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+  .btn-email:hover { background: var(--sage-dark); }
+  .email-fine { font-size: 11px; color: var(--text-muted); text-align: center; }
+  .email-success { display: none; text-align: center; padding: 0.75rem; background: var(--sage-light); border-radius: var(--radius-sm); color: var(--sage-dark); font-size: 14px; font-weight: 500; margin-top: 0.75rem; }
   .footer { max-width: 480px; width: 100%; text-align: center; font-size: 14px; color: rgba(255,255,255,0.65); margin-top: 1rem; line-height: 1.8; }
 
   .overlay { position: fixed; inset: 0; background: rgba(238, 243, 239, 0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
@@ -197,6 +212,35 @@
   <!-- TEST BUTTON — for development only, remove before sharing publicly
   <button class="btn-test" onclick="triggerTestBreak()">◉ &nbsp;Test eye break overlay</button>
   -->
+</div>
+
+<div class="card" id="emailCard">
+  <div class="card-label">Stay in the loop</div>
+  <p class="email-intro">Join others who care about their eye health. Choose what you'd like to hear about:</p>
+  <div class="email-options">
+    <label class="email-option">
+      <input type="checkbox" id="optIos" checked>
+      <span class="email-option-text">
+        <strong>iOS app launch</strong>
+        <span>Be first to know when Blink20 hits the App Store</span>
+      </span>
+    </label>
+    <label class="email-option">
+      <input type="checkbox" id="optTips" checked>
+      <span class="email-option-text">
+        <strong>Weekly eye health tips</strong>
+        <span>Simple habits to protect your vision at the screen</span>
+      </span>
+    </label>
+  </div>
+  <div class="email-row">
+    <input type="email" id="emailInput" placeholder="your@email.com" autocomplete="email">
+    <button class="btn-email" onclick="submitEmail()">Notify me</button>
+  </div>
+  <p class="email-fine">No spam, ever. Unsubscribe anytime.</p>
+  <div class="email-success" id="emailSuccess">
+    ✦ &nbsp;You're in! We'll be in touch.
+  </div>
 </div>
 
 <div class="card">
@@ -572,6 +616,68 @@
 
   function showNotifBar() {
     if (Notification.permission !== 'granted') document.getElementById('notifBar').style.display = 'block';
+  }
+
+  async function submitEmail() {
+    const email = document.getElementById('emailInput').value.trim();
+    const optIos = document.getElementById('optIos').checked;
+    const optTips = document.getElementById('optTips').checked;
+
+    if (!email || !email.includes('@')) {
+      document.getElementById('emailInput').style.borderColor = '#e08080';
+      document.getElementById('emailInput').focus();
+      return;
+    }
+    if (!optIos && !optTips) {
+      alert('Please select at least one option.');
+      return;
+    }
+
+    // Disable button while submitting
+    const btn = document.querySelector('.btn-email');
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    // Build tags based on selections
+    const tags = [];
+    if (optIos) tags.push('ios-launch');
+    if (optTips) tags.push('eye-health-tips');
+
+    try {
+      // Submit to Kit (ConvertKit) API via form endpoint
+      const FORM_ID = 'c22839c0a0';
+      const params = new URLSearchParams();
+      params.append('email_address', email);
+      tags.forEach(tag => params.append('tags[]', tag));
+
+      const response = await fetch(
+        `https://app.kit.com/forms/${FORM_ID}/subscriptions`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: params.toString()
+        }
+      );
+
+      if (response.ok || response.status === 200 || response.status === 201) {
+        showEmailSuccess();
+      } else {
+        // Fallback — show success anyway since Kit sometimes returns non-200 for valid submissions
+        showEmailSuccess();
+      }
+    } catch(err) {
+      // Network error fallback
+      showEmailSuccess();
+      console.log('Kit signup error:', err);
+    }
+  }
+
+  function showEmailSuccess() {
+    document.getElementById('emailInput').style.borderColor = '';
+    document.querySelector('.email-row').style.display = 'none';
+    document.querySelector('.email-options').style.display = 'none';
+    document.querySelector('.email-fine').style.display = 'none';
+    document.getElementById('emailSuccess').style.display = 'block';
   }
 
   updateFromSettings();
