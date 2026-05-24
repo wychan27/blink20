@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Primary SEO -->
+<title>Blink20 — Give Your Eyes a Break | 20-20-20 Eye Break Timer</title>
+<meta name="description" content="Free 20-20-20 rule timer to reduce digital eye strain and dry eyes. Every 20 minutes, get a gentle reminder to look 20 feet away for 20 seconds. Recommended by optometrists.">
+<meta name="keywords" content="20-20-20 rule, eye break timer, digital eye strain, dry eyes relief, screen time timer, eye care, computer vision syndrome, eye rest reminder, 20 20 20 timer, eye break reminder, reduce eye strain, optometrist recommended">
+<meta name="author" content="Blink20">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.blink20.app/">
+
+<!-- Open Graph (Facebook, LinkedIn, iMessage previews) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.blink20.app/">
+<meta property="og:title" content="Blink20 — Give Your Eyes a Break">
+<meta property="og:description" content="Free timer that reminds you to follow the 20-20-20 rule. Every 20 minutes, look 20 feet away for 20 seconds. Protect your eyes from screen fatigue.">
+<meta property="og:image" content="https://www.blink20.app/og-image.png">
+<meta property="og:site_name" content="Blink20">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://www.blink20.app/">
+<meta name="twitter:title" content="Blink20 — Give Your Eyes a Break">
+<meta name="twitter:description" content="Free timer that reminds you to follow the 20-20-20 rule. Every 20 minutes, look 20 feet away for 20 seconds. Protect your eyes from screen fatigue.">
+<meta name="twitter:image" content="https://www.blink20.app/og-image.png">
+
+<!-- PWA / Mobile -->
+<meta name="theme-color" content="#5a7c65">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Blink20">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- Structured Data (helps Google show rich results) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Blink20",
+  "url": "https://www.blink20.app",
+  "description": "A free timer that reminds you to follow the 20-20-20 rule to reduce digital eye strain. Every 20 minutes, look 20 feet away for 20 seconds.",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "keywords": "20-20-20 rule, eye strain, eye break timer, digital eye strain, dry eyes"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --sage: #5a7c65;
+    --sage-light: #eef3ef;
+    --sage-mid: #c2d4c7;
+    --sage-dark: #3d5945;
+    --stone: #8a8880;
+    --stone-light: #f5f3ef;
+    --stone-dark: #4a4844;
+    --cream: #faf8f4;
+    --text: #2c2a28;
+    --text-muted: #7a7874;
+    --white: #ffffff;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--sage); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2.5rem 1rem 4rem; }
+  .brand-block { text-align: center; margin-bottom: 2.5rem; }
+  .brand-name { font-family: 'DM Serif Display', serif; font-size: 72px; letter-spacing: 0.08em; color: var(--white); display: block; line-height: 1; margin-bottom: 0.3rem; }
+  .brand-name span { color: rgba(255,255,255,0.55); font-style: italic; font-size: 52px; }
+  .tagline-main { font-size: 22px; color: var(--white); font-weight: 400; display: block; margin-bottom: 0.35rem; letter-spacing: 0.01em; }
+  .tagline-sub { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 300; letter-spacing: 0.18em; text-transform: uppercase; display: block; }
+  .card { background: var(--white); border: 1px solid #e8e4dc; border-radius: var(--radius); padding: 2rem; width: 100%; max-width: 480px; margin-bottom: 1rem; }
+  .card-label { font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); font-weight: 500; margin-bottom: 1.25rem; }
+  .timer-ring-wrap { display: flex; justify-content: center; margin-bottom: 1.5rem; position: relative; }
+  .ring-svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--sage-light); stroke-width: 6; }
+  .ring-progress { fill: none; stroke: var(--sage); stroke-width: 6; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .ring-session-bg { fill: none; stroke: #e8e4dc; stroke-width: 3; }
+  .ring-session-progress { fill: none; stroke: var(--stone); stroke-width: 3; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .ring-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; }
+  .ring-time { font-family: 'DM Serif Display', serif; font-size: 48px; color: var(--text); line-height: 1; display: block; }
+  .ring-sublabel { font-size: 13px; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 4px; display: block; }
+  .session-info { display: flex; justify-content: space-between; font-size: 15px; color: var(--text-muted); margin-bottom: 1.75rem; padding: 0 0.25rem; }
+  .session-info span strong { color: var(--text); font-weight: 500; }
+  .btn-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .btn { flex: 1; padding: 0.85rem 1rem; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; cursor: pointer; border: none; transition: all 0.15s ease; letter-spacing: 0.01em; }
+  .btn-primary { background: var(--sage); color: var(--white); }
+  .btn-primary:hover { background: var(--sage-dark); }
+  .btn-secondary { background: var(--stone-light); color: var(--stone-dark); border: 1px solid #e0dcd4; }
+  .btn-secondary:hover { background: #ece9e2; }
+  .btn-test { width: 100%; padding: 0.7rem 1rem; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400; cursor: pointer; background: none; border: 1px dashed var(--sage-mid); color: var(--sage-dark); transition: all 0.15s ease; }
+  .btn-test:hover { background: var(--sage-light); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .setting-group label { display: block; font-size: 14px; color: var(--text-muted); margin-bottom: 0.5rem; }
+  .setting-group select, .setting-group input[type="number"] { width: 100%; padding: 0.6rem 0.75rem; border: 1px solid #e0dcd4; border-radius: var(--radius-sm); background: var(--stone-light); font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); appearance: none; -webkit-appearance: none; cursor: pointer; }
+  .setting-group select:focus, .setting-group input[type="number"]:focus { outline: none; border-color: var(--sage-mid); }
+
+  /* Volume slider row */
+  .volume-row { margin-top: 1rem; display: flex; align-items: center; gap: 12px; }
+  .volume-row label { font-size: 15px; color: var(--text-muted); white-space: nowrap; }
+  .volume-row input[type="range"] { flex: 1; accent-color: var(--sage); cursor: pointer; }
+  .volume-val { font-size: 15px; color: var(--text); min-width: 36px; text-align: right; font-weight: 500; }
+
+  .sound-row { margin-top: 0.75rem; display: flex; align-items: center; justify-content: space-between; }
+  .sound-row label { font-size: 15px; color: var(--text-muted); }
+  .toggle { position: relative; width: 40px; height: 22px; cursor: pointer; }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-track { position: absolute; inset: 0; background: #ddd; border-radius: 11px; transition: background 0.2s; }
+  .toggle input:checked + .toggle-track { background: var(--sage); }
+  .toggle-thumb { position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; background: white; border-radius: 50%; transition: left 0.2s; pointer-events: none; }
+  .toggle input:checked ~ .toggle-thumb { left: 21px; }
+
+  .stat-row { display: flex; gap: 0.75rem; }
+  .stat-box { flex: 1; background: var(--stone-light); border-radius: var(--radius-sm); padding: 0.875rem 1rem; text-align: center; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--sage-dark); display: block; line-height: 1.1; }
+  .stat-desc { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; margin-top: 3px; display: block; }
+
+  .footer { max-width: 480px; width: 100%; text-align: center; font-size: 14px; color: rgba(255,255,255,0.65); margin-top: 1rem; line-height: 1.8; }
+
+  .overlay { position: fixed; inset: 0; background: rgba(238, 243, 239, 0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+  .overlay.active { opacity: 1; pointer-events: all; }
+  .overlay-eye { font-family: 'DM Serif Display', serif; font-size: 80px; margin-bottom: 1.5rem; animation: breathe 3s ease-in-out infinite; color: var(--sage); }
+  @keyframes breathe { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.06); opacity: 1; } }
+  .overlay-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--sage-dark); text-align: center; margin-bottom: 0.5rem; }
+  .overlay-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 2rem; font-weight: 300; }
+  .overlay-countdown { font-family: 'DM Serif Display', serif; font-size: 64px; color: var(--sage); margin-bottom: 1.5rem; min-width: 80px; text-align: center; }
+  .overlay-skip { font-size: 13px; color: var(--text-muted); background: none; border: 1px solid #c8c4bc; border-radius: 8px; padding: 0.5rem 1.5rem; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .overlay-skip:hover { background: rgba(0,0,0,0.04); }
+
+  .session-end-overlay { position: fixed; inset: 0; background: rgba(238, 243, 239, 0.97); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+  .session-end-overlay.active { opacity: 1; pointer-events: all; }
+  .end-icon { font-size: 56px; color: var(--sage); font-family: 'DM Serif Display', serif; margin-bottom: 1rem; }
+  .end-title { font-family: 'DM Serif Display', serif; font-size: 26px; color: var(--sage-dark); text-align: center; margin-bottom: 0.5rem; }
+  .end-sub { font-size: 14px; color: var(--text-muted); text-align: center; margin-bottom: 2rem; font-weight: 300; }
+  .end-stat { font-family: 'DM Serif Display', serif; font-size: 48px; color: var(--sage); display: block; text-align: center; line-height: 1; }
+  .end-stat-label { font-size: 12px; color: var(--text-muted); text-align: center; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem; display: block; }
+  .end-btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; max-width: 340px; }
+  .end-btn { padding: 0.7rem 1.25rem; border-radius: var(--radius-sm); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid #e0dcd4; background: var(--white); color: var(--text); transition: all 0.15s; }
+  .end-btn:hover { background: var(--stone-light); }
+  .end-btn.primary { background: var(--sage); color: white; border-color: var(--sage); }
+  .end-btn.primary:hover { background: var(--sage-dark); }
+
+  .notification-bar { max-width: 480px; width: 100%; background: #fff8e8; border: 1px solid #f0e0a0; border-radius: var(--radius-sm); padding: 0.75rem 1rem; font-size: 14px; color: #7a6530; margin-bottom: 1rem; display: none; line-height: 1.5; }
+  .notification-bar a { color: var(--sage-dark); text-decoration: underline; cursor: pointer; }
+
+  @media (max-width: 500px) { .card { padding: 1.5rem; } .settings-grid { grid-template-columns: 1fr; } .ring-time { font-size: 34px; } }
+</style>
+</head>
+<body>
+
+<div class="brand-block">
+  <span class="brand-name">Blink20<span>™</span></span>
+  <span class="tagline-main">Give your eyes a break.</span>
+  <span class="tagline-sub">20 minutes &nbsp;·&nbsp; 20 feet &nbsp;·&nbsp; 20 seconds</span>
+</div>
+
+<div class="notification-bar" id="notifBar">
+  Enable browser notifications so reminders reach you even when this tab is in the background.
+  <a onclick="requestNotifPermission()">Enable notifications →</a>
+</div>
+
+<div class="card">
+  <div class="card-label">Eye break timer</div>
+  <div class="timer-ring-wrap">
+    <svg class="ring-svg" width="180" height="180" viewBox="0 0 180 180" aria-hidden="true">
+      <circle class="ring-session-bg" cx="90" cy="90" r="80"/>
+      <circle class="ring-session-progress" id="sessionRing" cx="90" cy="90" r="80" stroke-dasharray="502.65" stroke-dashoffset="0"/>
+      <circle class="ring-bg" cx="90" cy="90" r="66"/>
+      <circle class="ring-progress" id="breakRing" cx="90" cy="90" r="66" stroke-dasharray="414.69" stroke-dashoffset="0"/>
+    </svg>
+    <div class="ring-center">
+      <span class="ring-time" id="ringTime" aria-live="polite">20:00</span>
+      <span class="ring-sublabel" id="ringLabel">until break</span>
+    </div>
+  </div>
+  <div class="session-info">
+    <span>Session: <strong id="sessionRemaining">—</strong></span>
+    <span>Breaks taken: <strong id="breakCount">0</strong></span>
+  </div>
+  <div class="btn-row">
+    <button class="btn btn-primary" id="mainBtn" onclick="toggleStart()">Start session</button>
+    <button class="btn btn-secondary" id="pauseBtn" onclick="togglePause()" disabled>Pause</button>
+    <button class="btn btn-secondary" id="stopBtn" onclick="stopSession()" disabled>Stop</button>
+  </div>
+  <!-- TEST BUTTON — for development only, remove before sharing publicly
+  <button class="btn-test" onclick="triggerTestBreak()">◉ &nbsp;Test eye break overlay</button>
+  -->
+</div>
+
+<div class="card">
+  <div class="card-label">Settings</div>
+  <div class="settings-grid">
+    <div class="setting-group">
+      <label for="sessionDur">Session length</label>
+      <select id="sessionDur" onchange="updateFromSettings()">
+        <option value="60">1 hour</option>
+        <option value="120">2 hours</option>
+        <option value="180">3 hours</option>
+        <option value="240" selected>4 hours</option>
+        <option value="300">5 hours</option>
+        <option value="360">6 hours</option>
+        <option value="custom">Custom…</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <label for="breakInterval">Reminder every</label>
+      <select id="breakInterval" onchange="updateFromSettings()">
+        <option value="15">15 minutes</option>
+        <option value="20" selected>20 minutes</option>
+        <option value="25">25 minutes</option>
+        <option value="30">30 minutes</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <label for="restDur">Rest duration</label>
+      <select id="restDur" onchange="updateFromSettings()">
+        <option value="15">15 seconds</option>
+        <option value="20" selected>20 seconds</option>
+        <option value="30">30 seconds</option>
+      </select>
+    </div>
+    <div class="setting-group">
+      <label for="customMin">Custom session (min)</label>
+      <input type="number" id="customMin" placeholder="e.g. 90" min="5" max="600" oninput="onCustomMin()">
+    </div>
+  </div>
+
+  <div class="sound-row">
+    <label for="soundToggle">Play chime sound</label>
+    <label class="toggle">
+      <input type="checkbox" id="soundToggle" checked>
+      <span class="toggle-track"></span>
+      <span class="toggle-thumb"></span>
+    </label>
+  </div>
+
+  <div class="volume-row">
+    <label for="volumeSlider">Volume</label>
+    <input type="range" id="volumeSlider" min="0" max="100" value="80" oninput="document.getElementById('volumeVal').textContent = this.value + '%'">
+    <span class="volume-val" id="volumeVal">80%</span>
+  </div>
+</div>
+
+<!-- TODAY'S STATS CARD — commented out for now; re-enable when persistent storage is added
+<div class="card">
+  <div class="card-label">Today's stats</div>
+  <div class="stat-row">
+    <div class="stat-box">
+      <span class="stat-num" id="totalBreaks">0</span>
+      <span class="stat-desc">breaks taken</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="totalSessions">0</span>
+      <span class="stat-desc">sessions</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-num" id="totalMinutes">0</span>
+      <span class="stat-desc">min watched</span>
+    </div>
+  </div>
+</div>
+-->
+
+<div class="footer">
+  Based on the 20-20-20 rule recommended by optometrists.<br>
+  Every 20 minutes, look at something 20 feet away for 20 seconds.<br><br>
+  © 2025 Blink20™. All rights reserved. &nbsp;·&nbsp; <a href="https://www.blink20.app" style="color:var(--sage);">blink20.app</a>
+</div>
+
+<!-- Eye break overlay -->
+<div class="overlay" id="breakOverlay" role="dialog" aria-modal="true" aria-label="Eye break reminder">
+  <div class="overlay-eye" aria-hidden="true">◉</div>
+  <div class="overlay-title">Rest your eyes</div>
+  <div class="overlay-sub">Look 20 feet away — relax your focus</div>
+  <div class="overlay-countdown" id="overlayCount" aria-live="polite">20</div>
+  <button class="overlay-skip" onclick="skipBreak()">Skip this break</button>
+</div>
+
+<!-- Session end overlay -->
+<div class="session-end-overlay" id="sessionEndOverlay" role="dialog" aria-modal="true" aria-label="Session complete">
+  <div class="end-icon" aria-hidden="true">✦</div>
+  <div class="end-title">Session complete</div>
+  <div class="end-sub">Great work taking care of your eyes today.</div>
+  <span class="end-stat" id="endBreaks">0</span>
+  <span class="end-stat-label">eye breaks completed</span>
+  <div class="end-btn-row">
+    <button class="end-btn" onclick="extendSession(30)">+ 30 min</button>
+    <button class="end-btn" onclick="extendSession(60)">+ 1 hour</button>
+    <button class="end-btn" onclick="extendSession(120)">+ 2 hours</button>
+    <button class="end-btn primary" onclick="endForDay()">Done for today</button>
+  </div>
+</div>
+
+<script>
+  let sessionTotalSec = 240 * 60;
+  let breakIntervalSec = 20 * 60;
+  let restDurSec = 20;
+  let sessionRemainSec = 0;
+  let breakRemainSec = 0;
+  let overlayCountdown = 0;
+  let running = false;
+  let paused = false;
+  let sessionBreaks = 0;
+  // let allBreaks = 0;    // stats — re-enable with persistent storage
+  // let allSessions = 0;
+  // let allMinutes = 0;
+  let ticker = null;
+  let overlayTicker = null;
+  let endAutoTimer = null;
+  let isTestBreak = false;
+  const BREAK_CIRC = 414.69;
+  const SESSION_CIRC = 502.65;
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m + ':' + String(sec).padStart(2, '0');
+  }
+
+  function formatSessionTime(s) {
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    if (h > 0) return h + 'h ' + String(m).padStart(2, '0') + 'm';
+    return m + 'm';
+  }
+
+  function getVolume() {
+    return parseInt(document.getElementById('volumeSlider').value) / 100;
+  }
+
+  function updateFromSettings() {
+    if (running) return;
+    const sel = document.getElementById('sessionDur').value;
+    if (sel !== 'custom') { sessionTotalSec = parseInt(sel) * 60; document.getElementById('customMin').value = ''; }
+    breakIntervalSec = parseInt(document.getElementById('breakInterval').value) * 60;
+    restDurSec = parseInt(document.getElementById('restDur').value);
+    document.getElementById('ringTime').textContent = formatTime(breakIntervalSec);
+    if (!running) document.getElementById('sessionRemaining').textContent = '—';
+  }
+
+  function onCustomMin() {
+    const v = parseInt(document.getElementById('customMin').value);
+    if (v > 0) { sessionTotalSec = v * 60; document.getElementById('sessionDur').value = 'custom'; }
+  }
+
+  function toggleStart() { if (!running) startSession(); else stopSession(); }
+
+  function startSession() {
+    sessionRemainSec = sessionTotalSec; breakRemainSec = breakIntervalSec; sessionBreaks = 0;
+    running = true; paused = false;
+    document.getElementById('mainBtn').textContent = 'Stop';
+    document.getElementById('pauseBtn').disabled = false;
+    document.getElementById('stopBtn').disabled = false;
+    document.getElementById('sessionDur').disabled = true;
+    document.getElementById('breakInterval').disabled = true;
+    document.getElementById('restDur').disabled = true;
+    tick(); ticker = setInterval(tick, 1000);
+    if (Notification.permission === 'default') showNotifBar();
+  }
+
+  function stopSession() {
+    clearInterval(ticker); clearInterval(overlayTicker);
+    running = false; paused = false;
+    document.getElementById('breakOverlay').classList.remove('active');
+    document.getElementById('mainBtn').textContent = 'Start session';
+    document.getElementById('pauseBtn').disabled = true;
+    document.getElementById('pauseBtn').textContent = 'Pause';
+    document.getElementById('stopBtn').disabled = true;
+    document.getElementById('sessionDur').disabled = false;
+    document.getElementById('breakInterval').disabled = false;
+    document.getElementById('restDur').disabled = false;
+    updateRings(breakIntervalSec, breakIntervalSec, sessionTotalSec, sessionTotalSec);
+    document.getElementById('ringTime').textContent = formatTime(breakIntervalSec);
+    document.getElementById('ringLabel').textContent = 'until break';
+    document.getElementById('sessionRemaining').textContent = '—';
+  }
+
+  function togglePause() {
+    if (!running) return;
+    paused = !paused;
+    document.getElementById('pauseBtn').textContent = paused ? 'Resume' : 'Pause';
+  }
+
+  function tick() {
+    if (paused) return;
+    if (sessionRemainSec <= 0) { triggerSessionEnd(); return; }
+    if (breakRemainSec <= 0) { triggerBreak(); return; }
+    sessionRemainSec--; breakRemainSec--;
+    // allMinutes = Math.round((allMinutes * 60 + 1) / 60 * 100) / 100;  // stats
+    document.getElementById('ringTime').textContent = formatTime(breakRemainSec);
+    document.getElementById('ringLabel').textContent = 'until break';
+    document.getElementById('sessionRemaining').textContent = formatSessionTime(sessionRemainSec);
+    // document.getElementById('totalMinutes').textContent = Math.floor(allMinutes);  // stats
+    updateRings(breakRemainSec, breakIntervalSec, sessionRemainSec, sessionTotalSec);
+  }
+
+  function updateRings(breakR, breakT, sessR, sessT) {
+    const bOff = BREAK_CIRC * (1 - breakR / breakT);
+    const sOff = SESSION_CIRC * (1 - sessR / sessT);
+    document.getElementById('breakRing').style.strokeDashoffset = bOff;
+    document.getElementById('sessionRing').style.strokeDashoffset = sOff;
+  }
+
+  /* TEST FUNCTION — for development only, re-enable by uncommenting
+  function triggerTestBreak() {
+    isTestBreak = true;
+    if (running) clearInterval(ticker);
+    playChime();
+    document.getElementById('breakOverlay').classList.add('active');
+    overlayCountdown = restDurSec;
+    document.getElementById('overlayCount').textContent = overlayCountdown;
+    clearInterval(overlayTicker);
+    overlayTicker = setInterval(() => {
+      overlayCountdown--;
+      document.getElementById('overlayCount').textContent = overlayCountdown;
+      if (overlayCountdown <= 0) endBreak();
+    }, 1000);
+  }
+  */
+
+  function triggerBreak() {
+    isTestBreak = false;
+    clearInterval(ticker);
+    playChime();
+    sendNotification();
+    document.getElementById('breakOverlay').classList.add('active');
+    overlayCountdown = restDurSec;
+    document.getElementById('overlayCount').textContent = overlayCountdown;
+    clearInterval(overlayTicker);
+    overlayTicker = setInterval(() => {
+      overlayCountdown--;
+      document.getElementById('overlayCount').textContent = overlayCountdown;
+      if (overlayCountdown <= 0) endBreak();
+    }, 1000);
+  }
+
+  function endBreak() {
+    clearInterval(overlayTicker);
+    document.getElementById('breakOverlay').classList.remove('active');
+    if (!isTestBreak) {
+      sessionBreaks++; // allBreaks++;  // stats
+      breakRemainSec = breakIntervalSec;
+      document.getElementById('breakCount').textContent = sessionBreaks;
+      // document.getElementById('totalBreaks').textContent = allBreaks;  // stats
+      if (running) ticker = setInterval(tick, 1000);
+    }
+    isTestBreak = false;
+  }
+
+  function skipBreak() { endBreak(); }
+
+  function triggerSessionEnd() {
+    clearInterval(ticker); running = false;
+    // allSessions++;  // stats
+    // document.getElementById('totalSessions').textContent = allSessions;  // stats
+    document.getElementById('endBreaks').textContent = sessionBreaks;
+    document.getElementById('sessionEndOverlay').classList.add('active');
+    playChime();
+    endAutoTimer = setTimeout(() => { document.getElementById('sessionEndOverlay').classList.remove('active'); resetUI(); }, 60000);
+  }
+
+  function extendSession(minutes) {
+    clearTimeout(endAutoTimer);
+    document.getElementById('sessionEndOverlay').classList.remove('active');
+    sessionTotalSec = minutes * 60; breakRemainSec = breakIntervalSec;
+    sessionRemainSec = sessionTotalSec; sessionBreaks = 0; running = true;
+    document.getElementById('mainBtn').textContent = 'Stop';
+    document.getElementById('pauseBtn').disabled = false;
+    document.getElementById('stopBtn').disabled = false;
+    tick(); ticker = setInterval(tick, 1000);
+  }
+
+  function endForDay() {
+    clearTimeout(endAutoTimer);
+    document.getElementById('sessionEndOverlay').classList.remove('active');
+    resetUI();
+  }
+
+  function resetUI() {
+    document.getElementById('mainBtn').textContent = 'Start session';
+    document.getElementById('pauseBtn').disabled = true;
+    document.getElementById('pauseBtn').textContent = 'Pause';
+    document.getElementById('stopBtn').disabled = true;
+    document.getElementById('sessionDur').disabled = false;
+    document.getElementById('breakInterval').disabled = false;
+    document.getElementById('restDur').disabled = false;
+    document.getElementById('sessionRemaining').textContent = '—';
+    document.getElementById('breakCount').textContent = '0';
+    updateRings(breakIntervalSec, breakIntervalSec, sessionTotalSec, sessionTotalSec);
+    document.getElementById('ringTime').textContent = formatTime(breakIntervalSec);
+  }
+
+  function playChime() {
+    if (!document.getElementById('soundToggle').checked) return;
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const vol = getVolume();
+
+      // Three-wave chime sequence: each note has attack, sustain, long decay
+      // Notes spaced 0.55s apart, each ringing for ~2.5s — total ~3.5s of sound
+      const notes = [
+        { freq: 528,  start: 0.0  },
+        { freq: 660,  start: 0.55 },
+        { freq: 792,  start: 1.1  },
+        { freq: 660,  start: 1.65 },
+        { freq: 528,  start: 2.2  }
+      ];
+
+      notes.forEach(({ freq, start }) => {
+        const osc  = ctx.createOscillator();
+        const gain = ctx.createGain();
+        // Add a subtle second harmonic for richness
+        const osc2  = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+
+        osc.connect(gain);   gain.connect(ctx.destination);
+        osc2.connect(gain2); gain2.connect(ctx.destination);
+
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        osc2.type = 'sine';
+        osc2.frequency.value = freq * 2; // octave up, quieter
+
+        const t = ctx.currentTime + start;
+        const peak = vol * 0.55;
+        const peak2 = vol * 0.12;
+
+        // Main tone: fast attack, long sustain, slow decay
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(peak, t + 0.04);
+        gain.gain.setValueAtTime(peak, t + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 2.4);
+
+        // Harmonic: slightly delayed attack, fades faster
+        gain2.gain.setValueAtTime(0, t);
+        gain2.gain.linearRampToValueAtTime(peak2, t + 0.06);
+        gain2.gain.exponentialRampToValueAtTime(0.001, t + 1.2);
+
+        osc.start(t);  osc.stop(t + 2.5);
+        osc2.start(t); osc2.stop(t + 1.4);
+      });
+
+    } catch(e) {}
+  }
+
+  function sendNotification() {
+    if (Notification.permission === 'granted') {
+      new Notification('Time to rest your eyes', {
+        body: 'Look 20 feet away for 20 seconds.',
+        icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%235a7c65"/></svg>'
+      });
+    }
+  }
+
+  function requestNotifPermission() {
+    Notification.requestPermission().then(p => {
+      if (p === 'granted') document.getElementById('notifBar').style.display = 'none';
+    });
+  }
+
+  function showNotifBar() {
+    if (Notification.permission !== 'granted') document.getElementById('notifBar').style.display = 'block';
+  }
+
+  updateFromSettings();
+  document.getElementById('sessionRemaining').textContent = '—';
+</script>
+</body>
+</html>
